@@ -37,9 +37,9 @@ class FreeExamCategoryItem {
 
   factory FreeExamCategoryItem.fromJson(Map<String, dynamic> json) {
     return FreeExamCategoryItem(
-      id: json['id'],
+      id: json['id'] ?? 0,
       title: json['title'],
-      examCount: json['exam_count'],
+      examCount: json['exam_count'] ?? 0,
       examListLink: json['exam_list_link'],
     );
   }
@@ -77,9 +77,9 @@ class FreeExamCategoryExamListData {
   });
 
   factory FreeExamCategoryExamListData.fromJson(Map<String, dynamic> json) => FreeExamCategoryExamListData(
-    id: json['id'],
+    id: json['id'] ?? 0,
     title: json['title'],
-    examCount: json['exam_count'],
+    examCount: json['exam_count'] ?? 0,
     examLists: List<FreeExamListItem>.from(json['exam_lists'].map((x) => FreeExamListItem.fromJson(x))),
   );
 }
@@ -104,11 +104,11 @@ class FreeExamListItem {
   });
 
   factory FreeExamListItem.fromJson(Map<String, dynamic> json) => FreeExamListItem(
-    id: json['id'],
-    categoryId: json['category_id'],
+    id: json['id'] ?? 0,
+    categoryId: json['category_id'] ?? 0,
     name: json['name'],
     status: json['status'],
-    questionCount: json['question_count'],
+    questionCount: json['question_count'] ?? 0,
     attemptLink: json['attempt_link'],
     createdAt: json['created_at'],
   );
@@ -152,9 +152,9 @@ class FreeExamAttemptData {
 
   factory FreeExamAttemptData.fromJson(Map<String, dynamic> json) =>
       FreeExamAttemptData(
-        id: json['id'],
-        categoryId: json['category_id'],
-        examId: json['exam_id'],
+        id: json['id'] ?? 0,
+        categoryId: json['category_id'] ?? 0,
+        examId: json['exam_id'] ?? 0,
         attemptSubmitLink: json['attempt_submit_link'],
         category: FreeExamCategoryItem.fromJson(json['category']),
         exam: ExamDetails.fromJson(json['exam']),
@@ -185,14 +185,14 @@ class ExamDetails {
   });
 
   factory ExamDetails.fromJson(Map<String, dynamic> json) => ExamDetails(
-        id: json['id'],
+        id: json['id'] ?? 0,
         name: json['name'],
         description: json['description'],
         examTime: json['exam_time'],
         marksPerQuestion: json['marks_per_question'],
         negativeMarks: json['negative_marks'],
         status: json['status'],
-        questionCount: json['question_count'],
+        questionCount: json['question_count'] ?? 0,
         questionList: List<Question>.from(
             json['question_list'].map((x) => Question.fromJson(x))),
       );
@@ -218,7 +218,7 @@ class Question {
   });
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
-        id: json['id'],
+        id: json['id'] ?? 0,
         question: json['question'],
         optA: json['opt_a'],
         optB: json['opt_b'],
