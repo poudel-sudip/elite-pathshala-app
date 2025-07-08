@@ -278,7 +278,7 @@ class _OrientationsPageState extends State<OrientationsPage> {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.green,
+        color: Colors.red,
         borderRadius: BorderRadius.circular(4),
       ),
       child: const Center(
