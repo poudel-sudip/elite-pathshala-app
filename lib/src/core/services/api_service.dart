@@ -246,6 +246,12 @@ class ApiService {
     return await get(endpoint);
   }
 
+  static Future<Map<String, dynamic>> getFromFullUrl(String fullUrl) async {
+    final uri = Uri.parse(fullUrl);
+    final endpoint = uri.path.replaceAll('/api/', '');
+    return get(endpoint);
+  }
+
   // Booking-related API methods
   static Future<Map<String, dynamic>> getUserBookings() async {
     return await get('api/student/course/bookings');
