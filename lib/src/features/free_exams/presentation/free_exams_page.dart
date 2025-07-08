@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:elite_pathshala/src/core/models/free_exam_models.dart';
 import 'package:elite_pathshala/src/features/free_exams/services/free_exam_service.dart';
 import 'package:elite_pathshala/src/shared/widgets/auth_guard.dart';
+import 'package:elite_pathshala/src/features/free_exams/presentation/free_exam_category_page.dart';
 
 class FreeExamsPage extends StatefulWidget {
   const FreeExamsPage({super.key});
@@ -218,7 +219,13 @@ class _FreeExamsPageState extends State<FreeExamsPage> {
   }
 
   void _navigateToCategoryExams(FreeExamCategoryItem category) {
-    // TODO: Navigate to category exams page
-    print(category.examListLink);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FreeExamCategoryPage(
+          categoryId: category.id,
+          categoryTitle: category.title,
+        ),
+      ),
+    );
   }
 } 

@@ -11,4 +11,14 @@ class FreeExamService {
       throw Exception('Failed to fetch free exams: ${e.toString()}');
     }
   }
+
+  // Fetch exam list for a category
+  static Future<FreeExamCategoryExamListResponse> getCategoryExamList(int categoryId) async {
+    try {
+      final response = await ApiService.get('api/student/free-exams/$categoryId');
+      return FreeExamCategoryExamListResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch category exam list: ${e.toString()}');
+    }
+  }
 } 
