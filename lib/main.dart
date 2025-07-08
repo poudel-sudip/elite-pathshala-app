@@ -3,7 +3,7 @@ import 'package:elite_pathshala/src/features/auth/presentation/login_page.dart';
 import 'package:elite_pathshala/src/features/auth/presentation/signup_page.dart';
 import 'package:elite_pathshala/src/features/bookings/presentation/bookings_page.dart';
 import 'package:elite_pathshala/src/features/chat/presentation/chat_page.dart';
-import 'package:elite_pathshala/src/features/exams/presentation/free_exams_page.dart';
+import 'package:elite_pathshala/src/features/free_exams/presentation/free_exams_page.dart';
 import 'package:elite_pathshala/src/features/home/presentation/home_page.dart';
 import 'package:elite_pathshala/src/features/home/presentation/main_scaffold.dart';
 import 'package:elite_pathshala/src/features/notifications/presentation/notifications_page.dart';
@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/bookings': (context) => const AuthGuard(child: BookingsPage()),
         '/notifications': (context) => const AuthGuard(child: NotificationsPage()),
         '/orientations': (context) => const AuthGuard(child: OrientationsPage()),
+        '/free-exams': (context) => const AuthGuard(child: FreeExamsPage()),
         '/privacy': (context) => const PrivacyPolicyPage(),
       },
     );
