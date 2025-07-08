@@ -113,3 +113,117 @@ class FreeExamListItem {
     createdAt: json['created_at'],
   );
 }
+
+class FreeExamAttemptResponse {
+  final bool success;
+  final String message;
+  final FreeExamAttemptData data;
+
+  FreeExamAttemptResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory FreeExamAttemptResponse.fromJson(Map<String, dynamic> json) =>
+      FreeExamAttemptResponse(
+        success: json['success'],
+        message: json['message'],
+        data: FreeExamAttemptData.fromJson(json['data']),
+      );
+}
+
+class FreeExamAttemptData {
+  final int id;
+  final int categoryId;
+  final int examId;
+  final String attemptSubmitLink;
+  final FreeExamCategoryItem category;
+  final ExamDetails exam;
+
+  FreeExamAttemptData({
+    required this.id,
+    required this.categoryId,
+    required this.examId,
+    required this.attemptSubmitLink,
+    required this.category,
+    required this.exam,
+  });
+
+  factory FreeExamAttemptData.fromJson(Map<String, dynamic> json) =>
+      FreeExamAttemptData(
+        id: json['id'],
+        categoryId: json['category_id'],
+        examId: json['exam_id'],
+        attemptSubmitLink: json['attempt_submit_link'],
+        category: FreeExamCategoryItem.fromJson(json['category']),
+        exam: ExamDetails.fromJson(json['exam']),
+      );
+}
+
+class ExamDetails {
+  final int id;
+  final String name;
+  final String description;
+  final String examTime;
+  final String marksPerQuestion;
+  final String negativeMarks;
+  final String status;
+  final int questionCount;
+  final List<Question> questionList;
+
+  ExamDetails({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.examTime,
+    required this.marksPerQuestion,
+    required this.negativeMarks,
+    required this.status,
+    required this.questionCount,
+    required this.questionList,
+  });
+
+  factory ExamDetails.fromJson(Map<String, dynamic> json) => ExamDetails(
+        id: json['id'],
+        name: json['name'],
+        description: json['description'],
+        examTime: json['exam_time'],
+        marksPerQuestion: json['marks_per_question'],
+        negativeMarks: json['negative_marks'],
+        status: json['status'],
+        questionCount: json['question_count'],
+        questionList: List<Question>.from(
+            json['question_list'].map((x) => Question.fromJson(x))),
+      );
+}
+
+class Question {
+  final int id;
+  final String question;
+  final String optA;
+  final String optB;
+  final String optC;
+  final String optD;
+  final String optCorrect;
+
+  Question({
+    required this.id,
+    required this.question,
+    required this.optA,
+    required this.optB,
+    required this.optC,
+    required this.optD,
+    required this.optCorrect,
+  });
+
+  factory Question.fromJson(Map<String, dynamic> json) => Question(
+        id: json['id'],
+        question: json['question'],
+        optA: json['opt_a'],
+        optB: json['opt_b'],
+        optC: json['opt_c'],
+        optD: json['opt_d'],
+        optCorrect: json['opt_correct'],
+      );
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:elite_pathshala/src/core/models/free_exam_models.dart';
 import 'package:elite_pathshala/src/features/free_exams/services/free_exam_service.dart';
 import 'package:elite_pathshala/src/shared/widgets/auth_guard.dart';
+import 'package:elite_pathshala/src/features/free_exams/presentation/free_exam_attempt_page.dart';
 import 'package:elite_pathshala/src/core/utils/nepal_timezone.dart';
 
 class FreeExamCategoryPage extends StatefulWidget {
@@ -99,7 +100,11 @@ class _FreeExamCategoryPageState extends State<FreeExamCategoryPage> {
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
         onTap: () {
-          // TODO: Navigate to exam attempt page
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => FreeExamAttemptPage(attemptUrl: exam.attemptLink),
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16),

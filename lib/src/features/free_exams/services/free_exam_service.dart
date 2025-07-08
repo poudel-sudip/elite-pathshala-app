@@ -21,4 +21,13 @@ class FreeExamService {
       throw Exception('Failed to fetch category exam list: ${e.toString()}');
     }
   }
+
+  static Future<FreeExamAttemptResponse> getExamAttempt(String attemptUrl) async {
+    try {
+      final response = await ApiService.get(attemptUrl);
+      return FreeExamAttemptResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch exam questions: ${e.toString()}');
+    }
+  }
 } 
