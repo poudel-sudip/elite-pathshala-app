@@ -24,7 +24,9 @@ class FreeExamService {
 
   static Future<FreeExamAttemptResponse> getExamAttempt(String attemptUrl) async {
     try {
-      final response = await ApiService.get(attemptUrl);
+      final uri = Uri.parse(attemptUrl);
+      final endpoint = uri.path.substring(1); // Remove leading slash
+      final response = await ApiService.get(endpoint);
       return FreeExamAttemptResponse.fromJson(response);
     } catch (e) {
       throw Exception('Failed to fetch exam questions: ${e.toString()}');
