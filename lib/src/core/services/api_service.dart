@@ -248,8 +248,9 @@ class ApiService {
 
   static Future<Map<String, dynamic>> getFromFullUrl(String fullUrl) async {
     final uri = Uri.parse(fullUrl);
-    final endpoint = uri.path.replaceAll('/api/', '');
-    return get(endpoint);
+    final headers = await _headers;
+    final response = await http.get(uri, headers: headers);
+    return _handleResponse(response);
   }
 
   // Booking-related API methods
