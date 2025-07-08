@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
         '/notifications': (context) => const AuthGuard(child: NotificationsPage()),
         '/orientations': (context) => const AuthGuard(child: OrientationsPage()),
         '/privacy': (context) => const PrivacyPolicyPage(),
-        '/free-exams': (context) => const FreeExamsPage(),
       },
     );
   }

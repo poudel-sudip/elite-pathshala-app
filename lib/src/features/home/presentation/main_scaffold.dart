@@ -3,7 +3,7 @@ import './home_page.dart';
 import '../../profile/presentation/profile_page.dart';
 import '../../bookings/presentation/bookings_page.dart';
 import '../../notifications/presentation/notifications_page.dart';
-import '../../exams/presentation/free_exams_page.dart';
+import '../../free_exams/presentation/free_exams_page.dart';
 import '../../orientations/presentation/orientations_page.dart';
 import '../../privacy/presentation/privacy_policy_page.dart';
 import '../../auth/auth_service.dart';
@@ -61,7 +61,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 
   void _openFreeExams() {
-    Navigator.of(context).pushNamed('/free-exams');
+    setState(() => _selectedPageTab = AvailablePages.freeExams);
   }
 
   void _openFreeClasses() {
@@ -310,11 +310,26 @@ class _MainScaffoldState extends State<MainScaffold> {
       AvailablePages.profile,
     ];
 
-    setState(() => _selectedPageTab = navLinks[index]);
-    
+    if (index >= 0 && index < navLinks.length) {
+      setState(() => _selectedPageTab = navLinks[index]);
+    }
   }
 
   Widget _buildGlobalBottomBar() {
+    final navLinks = [
+      AvailablePages.home,
+      AvailablePages.freeExams,
+      AvailablePages.orientations,
+      AvailablePages.profile,
+    ];
+
+    int currentIndex = navLinks.indexOf(_selectedPageTab);
+    if (currentIndex < 0) {
+      // If the selected tab is not in the bottom nav bar (e.g., Bookings),
+      // default to a safe index, like 0 (Home), to avoid crashing.
+      currentIndex = 0;
+    }
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.black,
@@ -322,7 +337,7 @@ class _MainScaffoldState extends State<MainScaffold> {
       backgroundColor: Colors.white,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      currentIndex: _selectedPageTab.index,
+      currentIndex: currentIndex,
       onTap: _onBottomMenuBarItemTapped,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
