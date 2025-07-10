@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import 'package:elite_pathshala/src/core/models/free_exam_models.dart';
 import 'package:elite_pathshala/src/features/free_exams/services/free_exam_service.dart';
 import 'package:elite_pathshala/src/shared/widgets/auth_guard.dart';
@@ -385,9 +386,13 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                                    Html(
-                    data: question.question,
+                  Html(
+                    // data: question.question,
+                    data: question.question.replaceAll(RegExp(r'style="[^"]*"'), ''),
                     shrinkWrap: true,
+                    extensions: [
+                      const TableHtmlExtension(), // Enable table support
+                    ],
                     style: {
                       "body": Style(
                         fontSize: FontSize(16),
@@ -417,11 +422,26 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
                         margin: Margins.only(bottom: 4),
                       ),
                       "img": Style(
-                        // width: Width(100, Unit.percent),
-                        // height: Height.auto(),
                         margin: Margins.only(top: 8, bottom: 8),
                         display: Display.block,
                         textAlign: TextAlign.center,
+                      ),
+                      "table": Style(
+                        textAlign: TextAlign.center,
+                        margin: Margins.only(bottom: 4),
+
+                      ),
+                      "th": Style(
+                        padding: HtmlPaddings.all(8),
+                        backgroundColor: Colors.grey.shade200,
+                        border: Border.all(color: Colors.grey),
+                        textAlign: TextAlign.center,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      "td": Style(
+                        padding: HtmlPaddings.all(8),
+                        border: Border.all(color: Colors.grey),
+                        textAlign: TextAlign.left,
                       ),
                     },
                   ),
@@ -483,9 +503,12 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               ),
             ),
             Expanded(
-                            child: Html(
-                data: optionValue,
+              child: Html(
+                data: optionValue.replaceAll(RegExp(r'style="[^"]*"'), ''),
                 shrinkWrap: true,
+                extensions: [
+                  const TableHtmlExtension(), // Enable table support
+                ],
                 style: {
                   "body": Style(
                     color: isSelected ? Colors.blue : null,
@@ -515,11 +538,26 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
                     margin: Margins.only(bottom: 2),
                   ),
                   "img": Style(
-                    // width: Width(100, Unit.percent),
-                    // height: Height.auto(),
-                    margin: Margins.only(top: 4, bottom: 4),
+                    margin: Margins.only(top: 8, bottom: 8),
                     display: Display.block,
                     textAlign: TextAlign.center,
+                  ),
+                  "table": Style(
+                    textAlign: TextAlign.center,
+                    margin: Margins.only(bottom: 4),
+
+                  ),
+                  "th": Style(
+                    padding: HtmlPaddings.all(8),
+                    backgroundColor: Colors.grey.shade200,
+                    border: Border.all(color: Colors.grey),
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  "td": Style(
+                    padding: HtmlPaddings.all(8),
+                    border: Border.all(color: Colors.grey),
+                    textAlign: TextAlign.left,
                   ),
                 },
               ),
