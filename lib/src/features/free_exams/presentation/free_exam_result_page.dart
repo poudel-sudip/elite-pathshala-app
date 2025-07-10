@@ -3,21 +3,21 @@ import 'package:elite_pathshala/src/core/models/free_exam_models.dart';
 import 'package:elite_pathshala/src/features/free_exams/presentation/free_exams_page.dart';
 import 'package:flutter/material.dart';
 
-class ExamResultPage extends StatefulWidget {
+class FreeExamResultPage extends StatefulWidget {
   final ExamResultData resultData;
   final String examName;
 
-  const ExamResultPage({
+  const FreeExamResultPage({
     super.key,
     required this.resultData,
     required this.examName,
   });
 
   @override
-  State<ExamResultPage> createState() => _ExamResultPageState();
+  State<FreeExamResultPage> createState() => _FreeExamResultPageState();
 }
 
-class _ExamResultPageState extends State<ExamResultPage> {
+class _FreeExamResultPageState extends State<FreeExamResultPage> {
   bool _showCorrectAnswers = false;
   final Map<int, String> _userAnswers = {};
 
@@ -71,6 +71,7 @@ class _ExamResultPageState extends State<ExamResultPage> {
   @override
   Widget build(BuildContext context) {
     final totalQuestions = widget.resultData.totalQuestions;
+    final fullMarks = widget.resultData.fullMarks;
     final correctQuestions = int.tryParse(widget.resultData.correctQuestions) ?? 0;
     final wrongQuestions = int.tryParse(widget.resultData.wrongQuestions) ?? 0;
     final leavedQuestions = int.tryParse(widget.resultData.leavedQuestions) ?? 0;
@@ -102,6 +103,8 @@ class _ExamResultPageState extends State<ExamResultPage> {
                 const SizedBox(height: 16),
                 _buildResultStatusRow(
                     'Total Questions:', '$totalQuestions', Colors.black),
+                _buildResultStatusRow(
+                    'Full Marks:', '$fullMarks', Colors.black),
                 _buildResultStatusRow(
                     'Correct Questions:', '$correctQuestions', Colors.green),
                 _buildResultStatusRow(
@@ -167,30 +170,6 @@ class _ExamResultPageState extends State<ExamResultPage> {
                           widget.resultData.correctSolutions[index]);
                     },
                   ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const FreeExamsPage(),
-                      ),
-                      (Route<dynamic> route) => route.isFirst,
-                    );
-                  },
-                  child: const Text(
-                    'View Other Exams',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
               ],
             ),
           ),

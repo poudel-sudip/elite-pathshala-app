@@ -11,9 +11,6 @@ class FreeExamsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthGuard(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Free Exams'),
-        ),
         body: _buildBody(),
       ),
     );

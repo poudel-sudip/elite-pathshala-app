@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:elite_pathshala/src/core/models/free_exam_models.dart';
 import 'package:elite_pathshala/src/features/free_exams/services/free_exam_service.dart';
 import 'package:elite_pathshala/src/shared/widgets/auth_guard.dart';
 import 'package:elite_pathshala/src/core/services/api_service.dart';
-import 'package:elite_pathshala/src/features/free_exams/presentation/exam_result_page.dart';
+import 'package:elite_pathshala/src/features/free_exams/presentation/free_exam_result_page.dart';
 import 'package:elite_pathshala/src/features/free_exams/presentation/free_exams_page.dart';
 
 class FreeExamAttemptPage extends StatefulWidget {
@@ -193,7 +194,7 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
             // Navigate to exam result page
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => ExamResultPage(
+                builder: (context) => FreeExamResultPage(
                   resultData: resultResponse.data,
                   examName: _examData!.exam.name,
                 ),
@@ -384,9 +385,37 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    question.question,
-                    style: const TextStyle(fontSize: 16),
+                  Html(
+                    data: question.question,
+                    style: {
+                      "body": Style(
+                        fontSize: FontSize(16),
+                        margin: Margins.zero,
+                        padding: HtmlPaddings.zero,
+                      ),
+                      "p": Style(
+                        margin: Margins.only(bottom: 8),
+                      ),
+                      "h1, h2, h3, h4, h5, h6": Style(
+                        margin: Margins.only(bottom: 8),
+                      ),
+                      "ul, ol": Style(
+                        margin: Margins.only(bottom: 8),
+                        padding: HtmlPaddings.only(left: 20),
+                      ),
+                      "li": Style(
+                        margin: Margins.only(bottom: 4),
+                      ),
+                      "strong, b": Style(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      "em, i": Style(
+                        fontStyle: FontStyle.italic,
+                      ),
+                      "br": Style(
+                        margin: Margins.only(bottom: 4),
+                      ),
+                    },
                   ),
                   const SizedBox(height: 24),
                   
@@ -446,11 +475,37 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               ),
             ),
             Expanded(
-              child: Text(
-                optionValue,
-                style: TextStyle(
-                  color: isSelected ? Colors.blue : null,
-                ),
+              child: Html(
+                data: optionValue,
+                style: {
+                  "body": Style(
+                    color: isSelected ? Colors.blue : null,
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
+                  "p": Style(
+                    margin: Margins.zero,
+                  ),
+                  "strong, b": Style(
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.blue : null,
+                  ),
+                  "em, i": Style(
+                    fontStyle: FontStyle.italic,
+                    color: isSelected ? Colors.blue : null,
+                  ),
+                  "ul, ol": Style(
+                    margin: Margins.only(top: 4, bottom: 4),
+                    padding: HtmlPaddings.only(left: 16),
+                  ),
+                  "li": Style(
+                    margin: Margins.only(bottom: 2),
+                    color: isSelected ? Colors.blue : null,
+                  ),
+                  "br": Style(
+                    margin: Margins.only(bottom: 2),
+                  ),
+                },
               ),
             ),
           ],
