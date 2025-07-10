@@ -385,8 +385,9 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Html(
+                                    Html(
                     data: question.question,
+                    shrinkWrap: true,
                     style: {
                       "body": Style(
                         fontSize: FontSize(16),
@@ -414,6 +415,13 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
                       ),
                       "br": Style(
                         margin: Margins.only(bottom: 4),
+                      ),
+                      "img": Style(
+                        // width: Width(100, Unit.percent),
+                        // height: Height.auto(),
+                        margin: Margins.only(top: 8, bottom: 8),
+                        display: Display.block,
+                        textAlign: TextAlign.center,
                       ),
                     },
                   ),
@@ -475,8 +483,9 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
               ),
             ),
             Expanded(
-              child: Html(
+                            child: Html(
                 data: optionValue,
+                shrinkWrap: true,
                 style: {
                   "body": Style(
                     color: isSelected ? Colors.blue : null,
@@ -504,6 +513,13 @@ class _FreeExamAttemptPageState extends State<FreeExamAttemptPage> {
                   ),
                   "br": Style(
                     margin: Margins.only(bottom: 2),
+                  ),
+                  "img": Style(
+                    // width: Width(100, Unit.percent),
+                    // height: Height.auto(),
+                    margin: Margins.only(top: 4, bottom: 4),
+                    display: Display.block,
+                    textAlign: TextAlign.center,
                   ),
                 },
               ),
