@@ -489,9 +489,9 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.red.withValues(alpha: 0.1) : null,
+          color: isSelected ? Colors.blue.withValues(alpha: 0.1) : null,
           border: Border.all(
-            color: isSelected ? Colors.red : Colors.grey.shade300,
+            color: isSelected ? Colors.blue : Colors.grey.shade300,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
@@ -504,10 +504,10 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? Colors.red : Colors.grey,
+                  color: isSelected ? Colors.blue : Colors.grey,
                   width: 2,
                 ),
-                color: isSelected ? Colors.red : Colors.transparent,
+                color: isSelected ? Colors.blue : Colors.transparent,
               ),
               child: isSelected
                   ? const Icon(Icons.check, color: Colors.white, size: 16)
@@ -518,7 +518,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
               '$optionKey. ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.red : null,
+                color: isSelected ? Colors.blue : null,
               ),
             ),
             Expanded(
@@ -530,7 +530,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                 ],
                 style: {
                   "body": Style(
-                    color: isSelected ? Colors.red : null,
+                    color: isSelected ? Colors.blue : null,
                     margin: Margins.zero,
                     padding: HtmlPaddings.zero,
                   ),
@@ -539,11 +539,11 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                   ),
                   "strong, b": Style(
                     fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.red : null,
+                    color: isSelected ? Colors.blue : null,
                   ),
                   "em, i": Style(
                     fontStyle: FontStyle.italic,
-                    color: isSelected ? Colors.red : null,
+                    color: isSelected ? Colors.blue : null,
                   ),
                   "ul, ol": Style(
                     margin: Margins.only(top: 4, bottom: 4),
@@ -551,7 +551,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                   ),
                   "li": Style(
                     margin: Margins.only(bottom: 2),
-                    color: isSelected ? Colors.red : null,
+                    color: isSelected ? Colors.blue : null,
                   ),
                   "br": Style(
                     margin: Margins.only(bottom: 2),
