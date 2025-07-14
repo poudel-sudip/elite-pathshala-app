@@ -102,12 +102,11 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _loadBatchMcqExams,
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+                  ElevatedButton(
+                    onPressed: _loadBatchMcqExams,
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -258,7 +257,7 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: Colors.red.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -349,7 +348,7 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
   }
 
   void _navigateToExamAttempt(BatchMcqExamItem exam) async {
-    final result = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BatchMcqAttemptPage(
