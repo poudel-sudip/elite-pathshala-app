@@ -80,47 +80,66 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
     }
 
     if (_errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
+      return RefreshIndicator(
+        onRefresh: _loadBatchMcqExams,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 200,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _loadBatchMcqExams,
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              style: const TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadBatchMcqExams,
-              child: const Text('Retry'),
-            ),
-          ],
+          ),
         ),
       );
     }
 
     if (_examListData == null || _examListData!.examLists.isEmpty) {
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.quiz_outlined,
-              size: 64,
-              color: Colors.grey,
+      return RefreshIndicator(
+        onRefresh: _loadBatchMcqExams,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 200,
+            child: const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.quiz_outlined,
+                    size: 64,
+                    color: Colors.grey,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'No MCQ exams available',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 16),
-            Text(
-              'No MCQ exams available',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
+          ),
         ),
       );
     }
@@ -329,8 +348,8 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
     );
   }
 
-  void _navigateToExamAttempt(BatchMcqExamItem exam) {
-    Navigator.push(
+  void _navigateToExamAttempt(BatchMcqExamItem exam) async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BatchMcqAttemptPage(
@@ -338,6 +357,11 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
         ),
       ),
     );
+    
+    // Refresh the exam list when returning from attempt page
+    if (mounted) {
+      _loadBatchMcqExams();
+    }
   }
 
   Future<void> _openResultLink(String resultLink) async {
