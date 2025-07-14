@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html_table/flutter_html_table.dart';
 import '../../../core/models/batch_mcq_models.dart';
 import '../../../shared/widgets/auth_guard.dart';
 import '../services/batch_mcq_service.dart';
@@ -133,8 +134,6 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildExamInfoCard(),
-          const SizedBox(height: 16),
           _buildResultCard(),
           const SizedBox(height: 16),
           _buildQuestionStatusGrid(),
@@ -149,98 +148,7 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
     );
   }
 
-  Widget _buildExamInfoCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    _resultData!.batch.image,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.school, color: Colors.grey),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _resultData!.batch.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        _resultData!.batch.course.name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _resultData!.exam.name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(Icons.access_time, size: 16, color: Colors.grey[600]),
-                const SizedBox(width: 4),
-                Text(
-                  'Duration: ${_resultData!.exam.examTime}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Icon(Icons.star, size: 16, color: Colors.grey[600]),
-                const SizedBox(width: 4),
-                Text(
-                  'Marks: ${_resultData!.exam.marksPerQuestion} each',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildResultCard() {
     final marksObtained = _calculateMarksObtained();
@@ -255,7 +163,7 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Your Result Status',
+              'My Result Status',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -265,7 +173,6 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
             _buildResultRow('Wrong Questions:', '${_resultData!.wrongQuestions}', Colors.red),
             _buildResultRow('Leaved Questions:', '${_resultData!.leavedQuestions}', Colors.orange),
             _buildResultRow('Marks Obtained:', '$marksObtained', Colors.blue),
-            _buildResultRow('Attempt:', '${_resultData!.attempt}', Colors.purple),
           ],
         ),
       ),
@@ -302,7 +209,7 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Question Status',
+              'Solution Status',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -506,16 +413,59 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
             
             // Question text
             Html(
-              data: solution.question.question,
+              data: solution.question.question.replaceAll(RegExp(r'style="[^"]*"'), ''),
+              shrinkWrap: true,
+              extensions: [
+                const TableHtmlExtension(), // Enable table support
+              ],
               style: {
                 "body": Style(
+                  fontSize: FontSize(14),
                   margin: Margins.zero,
                   padding: HtmlPaddings.zero,
-                  fontSize: FontSize(14),
                 ),
                 "p": Style(
-                  margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
+                  margin: Margins.only(bottom: 8),
+                ),
+                "h1, h2, h3, h4, h5, h6": Style(
+                  margin: Margins.only(bottom: 8),
+                ),
+                "ul, ol": Style(
+                  margin: Margins.only(bottom: 8),
+                  padding: HtmlPaddings.only(left: 20),
+                ),
+                "li": Style(
+                  margin: Margins.only(bottom: 4),
+                ),
+                "strong, b": Style(
+                  fontWeight: FontWeight.bold,
+                ),
+                "em, i": Style(
+                  fontStyle: FontStyle.italic,
+                ),
+                "br": Style(
+                  margin: Margins.only(bottom: 4),
+                ),
+                "img": Style(
+                  margin: Margins.only(top: 8, bottom: 8),
+                  display: Display.block,
+                  textAlign: TextAlign.center,
+                ),
+                "table": Style(
+                  textAlign: TextAlign.center,
+                  margin: Margins.only(bottom: 4),
+                ),
+                "th": Style(
+                  padding: HtmlPaddings.all(8),
+                  backgroundColor: Colors.grey.shade200,
+                  border: Border.all(color: Colors.grey),
+                  textAlign: TextAlign.center,
+                  fontWeight: FontWeight.bold,
+                ),
+                "td": Style(
+                  padding: HtmlPaddings.all(8),
+                  border: Border.all(color: Colors.grey),
+                  textAlign: TextAlign.left,
                 ),
               },
             ),
@@ -630,17 +580,60 @@ class _BatchMcqResultPageState extends State<BatchMcqResultPage> {
           const SizedBox(width: 12),
           Expanded(
             child: Html(
-              data: optionText,
+              data: optionText.replaceAll(RegExp(r'style="[^"]*"'), ''),
+              shrinkWrap: true,
+              extensions: [
+                const TableHtmlExtension(), // Enable table support
+              ],
               style: {
                 "body": Style(
+                  color: textColor,
                   margin: Margins.zero,
                   padding: HtmlPaddings.zero,
                   fontSize: FontSize(13),
-                  color: textColor,
                 ),
                 "p": Style(
                   margin: Margins.zero,
-                  padding: HtmlPaddings.zero,
+                ),
+                "strong, b": Style(
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+                "em, i": Style(
+                  fontStyle: FontStyle.italic,
+                  color: textColor,
+                ),
+                "ul, ol": Style(
+                  margin: Margins.only(top: 4, bottom: 4),
+                  padding: HtmlPaddings.only(left: 16),
+                ),
+                "li": Style(
+                  margin: Margins.only(bottom: 2),
+                  color: textColor,
+                ),
+                "br": Style(
+                  margin: Margins.only(bottom: 2),
+                ),
+                "img": Style(
+                  margin: Margins.only(top: 8, bottom: 8),
+                  display: Display.block,
+                  textAlign: TextAlign.center,
+                ),
+                "table": Style(
+                  textAlign: TextAlign.center,
+                  margin: Margins.only(bottom: 4),
+                ),
+                "th": Style(
+                  padding: HtmlPaddings.all(8),
+                  backgroundColor: Colors.grey.shade200,
+                  border: Border.all(color: Colors.grey),
+                  textAlign: TextAlign.center,
+                  fontWeight: FontWeight.bold,
+                ),
+                "td": Style(
+                  padding: HtmlPaddings.all(8),
+                  border: Border.all(color: Colors.grey),
+                  textAlign: TextAlign.left,
                 ),
               },
             ),
