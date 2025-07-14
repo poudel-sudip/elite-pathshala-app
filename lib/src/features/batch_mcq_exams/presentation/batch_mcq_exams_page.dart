@@ -64,7 +64,7 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_examListData?.name ?? 'MCQ Exams'),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
         body: _buildBody(),
@@ -239,12 +239,12 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: Colors.red.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
                     Icons.quiz,
-                    color: Colors.orange,
+                    color: Colors.red,
                     size: 30,
                   ),
                 ),

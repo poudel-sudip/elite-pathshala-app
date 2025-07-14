@@ -305,7 +305,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_examData?.exam.name ?? 'Batch MCQ Exam'),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.red,
           foregroundColor: Colors.white,
           actions: [
             if (!_isLoading && _examData != null && !_timeUp)
@@ -321,7 +321,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                     child: Text(
                       _formatTime(_remainingTime),
                       style: TextStyle(
-                        color: _remainingTime.inMinutes < 5 ? Colors.white : Colors.orange,
+                        color: _remainingTime.inMinutes < 5 ? Colors.white : Colors.red,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -389,7 +389,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                 decoration: BoxDecoration(
                   color: _selectedAnswers.containsKey(_currentQuestionIndex) 
                       ? Colors.green.withValues(alpha: 0.2) 
-                      : Colors.orange.withValues(alpha: 0.2),
+                      : Colors.red.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -489,9 +489,9 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.orange.withValues(alpha: 0.1) : null,
+          color: isSelected ? Colors.red.withValues(alpha: 0.1) : null,
           border: Border.all(
-            color: isSelected ? Colors.orange : Colors.grey.shade300,
+            color: isSelected ? Colors.red : Colors.grey.shade300,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
@@ -504,10 +504,10 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? Colors.orange : Colors.grey,
+                  color: isSelected ? Colors.red : Colors.grey,
                   width: 2,
                 ),
-                color: isSelected ? Colors.orange : Colors.transparent,
+                color: isSelected ? Colors.red : Colors.transparent,
               ),
               child: isSelected
                   ? const Icon(Icons.check, color: Colors.white, size: 16)
@@ -518,7 +518,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
               '$optionKey. ',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.orange : null,
+                color: isSelected ? Colors.red : null,
               ),
             ),
             Expanded(
@@ -530,7 +530,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                 ],
                 style: {
                   "body": Style(
-                    color: isSelected ? Colors.orange : null,
+                    color: isSelected ? Colors.red : null,
                     margin: Margins.zero,
                     padding: HtmlPaddings.zero,
                   ),
@@ -539,11 +539,11 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                   ),
                   "strong, b": Style(
                     fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.orange : null,
+                    color: isSelected ? Colors.red : null,
                   ),
                   "em, i": Style(
                     fontStyle: FontStyle.italic,
-                    color: isSelected ? Colors.orange : null,
+                    color: isSelected ? Colors.red : null,
                   ),
                   "ul, ol": Style(
                     margin: Margins.only(top: 4, bottom: 4),
@@ -551,7 +551,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
                   ),
                   "li": Style(
                     margin: Margins.only(bottom: 2),
-                    color: isSelected ? Colors.orange : null,
+                    color: isSelected ? Colors.red : null,
                   ),
                   "br": Style(
                     margin: Margins.only(bottom: 2),
@@ -626,7 +626,7 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: _currentQuestionIndex == _examData!.exam.questionCount - 1
                     ? Colors.green
-                    : Colors.orange,
+                    : Colors.red,
                 foregroundColor: Colors.white,
               ),
               child: Text(

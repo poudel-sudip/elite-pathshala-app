@@ -367,7 +367,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (links.mcqExams != null && links.mcqExams!.isNotEmpty) {
-      buttons.add(_buildFileButton('MCQ Exams', Colors.orange, () => _openMcqExams(classroomClass)));
+      buttons.add(_buildFileButton('MCQ Exams', Colors.red, () => _openMcqExams(classroomClass)));
     }
 
     if (links.writtenExams != null && links.writtenExams!.isNotEmpty) {
