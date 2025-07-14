@@ -128,6 +128,47 @@ class AuthService {
     );
   }
 
+  // Update user profile
+  static Future<Map<String, dynamic>> updateProfile({
+    String? name,
+    String? contact,
+    String? email,
+    String? imagePath,
+  }) async {
+    try {
+      Map<String, dynamic> response;
+      
+      if (imagePath != null) {
+        // Use multipart request if image is provided
+        response = await ApiService.updateProfileWithImage(
+          name: name,
+          contact: contact,
+          email: email,
+          imagePath: imagePath,
+        );
+      } else {
+        // Use regular JSON request if no image
+        response = await ApiService.updateProfile(
+          name: name,
+          contact: contact,
+          email: email,
+        );
+      }
+
+      if (response['success'] == true) {
+        // Update current user data with new profile data
+        final updatedData = response['data'];
+        _currentUser = updatedData;
+        await TokenStorage.saveUserData(jsonEncode(_currentUser));
+        return response;
+      } else {
+        throw Exception(response['message'] ?? 'Failed to update profile');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // Delete/Deactivate account
   static Future<void> deleteAccount() async {
     try {

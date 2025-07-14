@@ -3,6 +3,7 @@ import '../../bookings/presentation/bookings_page.dart';
 import '../../privacy/presentation/privacy_policy_page.dart';
 import '../../auth/auth_service.dart';
 import '../../auth/presentation/login_page.dart';
+import 'profile_edit_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -202,6 +203,21 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       }
+    }
+  }
+
+  Future<void> _navigateToEditProfile() async {
+    if (_userProfile == null) return;
+
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => ProfileEditPage(userProfile: _userProfile!),
+      ),
+    );
+
+    // If profile was updated, refresh the profile data
+    if (result == true) {
+      _loadUserProfile();
     }
   }
 
@@ -410,19 +426,22 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  textAlign: TextAlign.center,
+          GestureDetector(
+            onTap: () => _navigateToEditProfile(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Icon(Icons.edit, color: Colors.red[600]),
-            ],
+                const SizedBox(width: 8),
+                Icon(Icons.edit, color: Colors.red[600]),
+              ],
+            ),
           ),
           if (userId != '-') ...[
             const SizedBox(height: 4),

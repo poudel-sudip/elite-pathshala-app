@@ -271,6 +271,101 @@ class ApiService {
     return _handleResponse(response);
   }
 
+  // Profile update methods
+  static Future<Map<String, dynamic>> updateProfile({
+    String? name,
+    String? contact,
+    String? email,
+  }) async {
+    final data = <String, dynamic>{};
+    
+    if (name != null) data['name'] = name;
+    if (contact != null) data['contact'] = contact;
+    if (email != null) data['email'] = email;
+    
+    return await post('api/profile/update', data);
+  }
+
+  // Update profile with image
+  static Future<Map<String, dynamic>> updateProfileWithImage({
+    String? name,
+    String? contact,
+    String? email,
+    String? imagePath,
+  }) async {
+    try {
+      final url = Uri.parse('$_baseUrl/api/profile/update');
+      final request = http.MultipartRequest('POST', url);
+      
+      // Add headers
+      final authHeader = await TokenStorage.getAuthHeader();
+      if (authHeader != null) {
+        request.headers['Authorization'] = authHeader;
+      }
+      request.headers['Accept'] = 'application/json';
+      
+      // Add fields
+      if (name != null) request.fields['name'] = name;
+      if (contact != null) request.fields['contact'] = contact;
+      if (email != null) request.fields['email'] = email;
+      
+      // Add image file if provided
+      if (imagePath != null) {
+        final file = await http.MultipartFile.fromPath('photo', imagePath);
+        request.files.add(file);
+      }
+      
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+      
+      return _handleMultipartResponse(response.statusCode, responseBody);
+    } catch (e) {
+      throw Exception('Profile update failed: ${e.toString()}');
+    }
+  }
+
+  // Handle multipart response
+  static Map<String, dynamic> _handleMultipartResponse(int statusCode, String responseBody) {
+    try {
+      final Map<String, dynamic> responseData = jsonDecode(responseBody);
+
+      if (statusCode >= 200 && statusCode < 300) {
+        return responseData;
+      } else if (statusCode == 401) {
+        // Session expired - handle logout
+        _handleSessionExpired();
+        throw Exception('Session expired. Please login again.');
+      } else {
+        // Handle error responses
+        String errorMessage = 'Request failed ($statusCode)';
+        
+        if (responseData.containsKey('message')) {
+          errorMessage = responseData['message'];
+        } else if (responseData.containsKey('errors')) {
+          // Handle validation errors
+          final errors = responseData['errors'] as Map<String, dynamic>;
+          final errorList = <String>[];
+          errors.forEach((key, value) {
+            if (value is List) {
+              errorList.addAll(value.cast<String>());
+            } else {
+              errorList.add(value.toString());
+            }
+          });
+          errorMessage = errorList.join(', ');
+        }
+
+        throw Exception(errorMessage);
+      }
+    } catch (e) {
+      if (e is Exception) {
+        rethrow;
+      }
+      // If JSON parsing fails, return the raw response
+      throw Exception('Invalid response format: $responseBody');
+    }
+  }
+
   // Booking-related API methods
   static Future<Map<String, dynamic>> getUserBookings() async {
     return await get('api/student/course/bookings');
