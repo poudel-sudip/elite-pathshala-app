@@ -264,6 +264,13 @@ class ApiService {
     return _handleResponse(response);
   }
 
+  static Future<Map<String, dynamic>> deleteFromFullUrl(String fullUrl) async {
+    final uri = Uri.parse(fullUrl);
+    final headers = await _headers;
+    final response = await http.delete(uri, headers: headers);
+    return _handleResponse(response);
+  }
+
   // Booking-related API methods
   static Future<Map<String, dynamic>> getUserBookings() async {
     return await get('api/student/course/bookings');

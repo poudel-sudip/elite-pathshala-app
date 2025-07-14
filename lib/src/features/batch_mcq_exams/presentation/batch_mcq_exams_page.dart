@@ -380,15 +380,65 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
   }
 
   Future<void> _openResetLink(String resetLink) async {
-    // For now, open in browser. Later we can implement proper reset functionality
-    final uri = Uri.parse(resetLink);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
+    try {
+      // Show loading indicator
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Could not open reset link'),
+            content: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ),
+                SizedBox(width: 16),
+                Text('Resetting exam...'),
+              ],
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+
+      // Call the reset API
+      final response = await BatchMcqService.resetBatchMcqExam(resetLink);
+      
+      if (mounted) {
+        // Hide loading snackbar
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        
+        if (response.success) {
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.message),
+              backgroundColor: Colors.green,
+            ),
+          );
+          
+          // Refresh the exam list to show updated status
+          _loadBatchMcqExams();
+        } else {
+          // Show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to reset exam: ${e.toString().replaceAll('Exception: ', '')}'),
+            backgroundColor: Colors.red,
           ),
         );
       }

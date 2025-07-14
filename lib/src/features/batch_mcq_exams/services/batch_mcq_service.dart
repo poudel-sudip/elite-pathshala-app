@@ -38,4 +38,14 @@ class BatchMcqService {
       throw Exception('Failed to submit batch MCQ exam: ${e.toString()}');
     }
   }
+
+  // Reset batch MCQ exam
+  static Future<BatchMcqResetResponse> resetBatchMcqExam(String resetUrl) async {
+    try {
+      final response = await ApiService.deleteFromFullUrl(resetUrl);
+      return BatchMcqResetResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to reset batch MCQ exam: ${e.toString()}');
+    }
+  }
 } 

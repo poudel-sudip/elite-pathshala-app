@@ -306,4 +306,25 @@ class BatchMcqSubmissionData {
       resultLink: json['result_link'] ?? '',
     );
   }
+}
+
+// Batch MCQ Exam Reset Response Model
+class BatchMcqResetResponse {
+  final bool success;
+  final String message;
+  final dynamic data; // Can be null
+
+  BatchMcqResetResponse({
+    required this.success,
+    required this.message,
+    this.data,
+  });
+
+  factory BatchMcqResetResponse.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResetResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? 'Unknown error',
+      data: json['data'],
+    );
+  }
 } 
