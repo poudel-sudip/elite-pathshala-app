@@ -143,7 +143,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update profile: ${e.toString().replaceFirst('Exception: ', '')}'),
+            content: Text('${e.toString().replaceFirst('Exception: ', '')}'),
             backgroundColor: Colors.red,
           ),
         );
