@@ -283,7 +283,7 @@ class ApiService {
     if (contact != null) data['contact'] = contact;
     if (email != null) data['email'] = email;
     
-    return await post('api/profile/update', data);
+    return await post('api/profile', data);
   }
 
   // Update profile with image
@@ -294,7 +294,7 @@ class ApiService {
     String? imagePath,
   }) async {
     try {
-      final url = Uri.parse('$_baseUrl/api/profile/update');
+      final url = Uri.parse('$_baseUrl/api/profile');
       final request = http.MultipartRequest('POST', url);
       
       // Add headers
