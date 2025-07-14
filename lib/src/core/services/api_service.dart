@@ -88,8 +88,23 @@ class ApiService {
         
         if (responseData.containsKey('message')) {
           errorMessage = responseData['message'];
+          
+          // If there are validation errors, append the first one
+          if (responseData.containsKey('errors')) {
+            final errors = responseData['errors'] as Map<String, dynamic>;
+            if (errors.isNotEmpty) {
+              final firstError = errors.values.first;
+              String firstErrorMessage = '';
+              if (firstError is List && firstError.isNotEmpty) {
+                firstErrorMessage = firstError.first.toString();
+              } else {
+                firstErrorMessage = firstError.toString();
+              }
+              errorMessage = '$errorMessage $firstErrorMessage';
+            }
+          }
         } else if (responseData.containsKey('errors')) {
-          // Handle validation errors
+          // Handle validation errors when no message
           final errors = responseData['errors'] as Map<String, dynamic>;
           final errorList = <String>[];
           errors.forEach((key, value) {
@@ -341,8 +356,23 @@ class ApiService {
         
         if (responseData.containsKey('message')) {
           errorMessage = responseData['message'];
+          
+          // If there are validation errors, append the first one
+          if (responseData.containsKey('errors')) {
+            final errors = responseData['errors'] as Map<String, dynamic>;
+            if (errors.isNotEmpty) {
+              final firstError = errors.values.first;
+              String firstErrorMessage = '';
+              if (firstError is List && firstError.isNotEmpty) {
+                firstErrorMessage = firstError.first.toString();
+              } else {
+                firstErrorMessage = firstError.toString();
+              }
+              errorMessage = '$errorMessage $firstErrorMessage';
+            }
+          }
         } else if (responseData.containsKey('errors')) {
-          // Handle validation errors
+          // Handle validation errors when no message
           final errors = responseData['errors'] as Map<String, dynamic>;
           final errorList = <String>[];
           errors.forEach((key, value) {
