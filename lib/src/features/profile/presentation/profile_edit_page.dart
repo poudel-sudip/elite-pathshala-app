@@ -100,13 +100,50 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         setState(() {
           _selectedImage = File(image.path);
         });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Image selected successfully!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = 'Failed to pick image';
+        
+        // Handle specific error cases
+        if (e.toString().contains('camera_access_denied') || 
+            e.toString().contains('photo_access_denied')) {
+          errorMessage = 'Permission denied. Please enable camera/photo access in Settings.';
+        } else if (e.toString().contains('invalid_image')) {
+          errorMessage = 'Invalid image format. Please select a valid image.';
+        } else {
+          errorMessage = 'Failed to pick image: ${e.toString()}';
+        }
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick image: $e'),
+            content: Text(errorMessage),
             backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+            action: SnackBarAction(
+              label: 'Settings',
+              textColor: Colors.white,
+              onPressed: () {
+                // You could add code here to open app settings
+                // For now, just show instruction
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Go to Settings > Elite Pathshala > Enable Camera & Photos'),
+                    backgroundColor: Colors.blue,
+                  ),
+                );
+              },
+            ),
           ),
         );
       }
