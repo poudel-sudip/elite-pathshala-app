@@ -6,7 +6,7 @@ import 'package:flutter_html_table/flutter_html_table.dart';
 import '../../../core/models/batch_mcq_models.dart';
 import '../services/batch_mcq_service.dart';
 import '../../../shared/widgets/auth_guard.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'batch_mcq_result_page.dart';
 
 class BatchMcqAttemptPage extends StatefulWidget {
   final String attemptUrl;
@@ -240,24 +240,16 @@ class _BatchMcqAttemptPageState extends State<BatchMcqAttemptPage> {
   }
 
   Future<void> _openResultLink(String resultLink) async {
-    // For now, open in browser. Later we can implement a result page
-    final uri = Uri.parse(resultLink);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-      // Go back after opening result
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Could not open result link'),
+    if (mounted) {
+      // Navigate to the result page instead of opening browser
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BatchMcqResultPage(
+            resultUrl: resultLink,
           ),
-        );
-        // Still go back
-        Navigator.of(context).pop();
-      }
+        ),
+      );
     }
   }
 
