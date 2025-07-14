@@ -4,7 +4,7 @@ import '../../../core/models/course_classroom.dart';
 import '../../../shared/widgets/auth_guard.dart';
 import '../services/batch_mcq_service.dart';
 import 'batch_mcq_attempt_page.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'batch_mcq_result_page.dart';
 
 class BatchMcqExamsPage extends StatefulWidget {
   final ClassroomClass classroomClass;
@@ -364,45 +364,40 @@ class _BatchMcqExamsPageState extends State<BatchMcqExamsPage> {
   }
 
   Future<void> _openResultLink(String resultLink) async {
-    // For now, open in browser. Later we can implement a result page
-    final uri = Uri.parse(resultLink);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Could not open result link'),
-          ),
-        );
-      }
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BatchMcqResultPage(
+          resultUrl: resultLink,
+        ),
+      ),
+    );
   }
 
   Future<void> _openResetLink(String resetLink) async {
     try {
       // Show loading indicator
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                ),
-                SizedBox(width: 16),
-                Text('Resetting exam...'),
-              ],
-            ),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
+      // if (mounted) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(
+      //       content: Row(
+      //         children: [
+      //           SizedBox(
+      //             width: 20,
+      //             height: 20,
+      //             child: CircularProgressIndicator(
+      //               strokeWidth: 2,
+      //               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      //             ),
+      //           ),
+      //           SizedBox(width: 16),
+      //           Text('Resetting exam...'),
+      //         ],
+      //       ),
+      //       duration: Duration(seconds: 2),
+      //     ),
+      //   );
+      // }
 
       // Call the reset API
       final response = await BatchMcqService.resetBatchMcqExam(resetLink);

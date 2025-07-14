@@ -327,4 +327,216 @@ class BatchMcqResetResponse {
       data: json['data'],
     );
   }
+}
+
+// Batch MCQ Exam Result Response Models
+class BatchMcqResultResponse {
+  final bool success;
+  final String message;
+  final BatchMcqResultData data;
+
+  BatchMcqResultResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory BatchMcqResultResponse.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? 'Unknown error',
+      data: BatchMcqResultData.fromJson(json['data'] ?? {}),
+    );
+  }
+}
+
+class BatchMcqResultData {
+  final int id;
+  final int userId;
+  final int batchId;
+  final int examId;
+  final int attempt;
+  final int totalQuestions;
+  final int leavedQuestions;
+  final int correctQuestions;
+  final int wrongQuestions;
+  final String? marksObtained;
+  final String createdAt;
+  final String updatedAt;
+  final BatchMcqResultBatch batch;
+  final BatchMcqResultExam exam;
+  final List<BatchMcqResultSolution> solutions;
+
+  BatchMcqResultData({
+    required this.id,
+    required this.userId,
+    required this.batchId,
+    required this.examId,
+    required this.attempt,
+    required this.totalQuestions,
+    required this.leavedQuestions,
+    required this.correctQuestions,
+    required this.wrongQuestions,
+    this.marksObtained,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.batch,
+    required this.exam,
+    required this.solutions,
+  });
+
+  factory BatchMcqResultData.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultData(
+      id: json['id'] ?? 0,
+      userId: json['user_id'] ?? 0,
+      batchId: json['batch_id'] ?? 0,
+      examId: json['exam_id'] ?? 0,
+      attempt: json['attempt'] ?? 0,
+      totalQuestions: json['total_questions'] ?? 0,
+      leavedQuestions: json['leaved_questions'] ?? 0,
+      correctQuestions: json['correct_questions'] ?? 0,
+      wrongQuestions: json['wrong_questions'] ?? 0,
+      marksObtained: json['marks_obtained']?.toString(),
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      batch: BatchMcqResultBatch.fromJson(json['batch'] ?? {}),
+      exam: BatchMcqResultExam.fromJson(json['exam'] ?? {}),
+      solutions: (json['solutions'] as List<dynamic>? ?? [])
+          .map((e) => BatchMcqResultSolution.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class BatchMcqResultBatch {
+  final int id;
+  final int courseId;
+  final String name;
+  final String image;
+  final String status;
+  final BatchMcqResultCourse course;
+
+  BatchMcqResultBatch({
+    required this.id,
+    required this.courseId,
+    required this.name,
+    required this.image,
+    required this.status,
+    required this.course,
+  });
+
+  factory BatchMcqResultBatch.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultBatch(
+      id: json['id'] ?? 0,
+      courseId: json['course_id'] ?? 0,
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+      status: json['status'] ?? '',
+      course: BatchMcqResultCourse.fromJson(json['course'] ?? {}),
+    );
+  }
+}
+
+class BatchMcqResultCourse {
+  final int id;
+  final String name;
+
+  BatchMcqResultCourse({
+    required this.id,
+    required this.name,
+  });
+
+  factory BatchMcqResultCourse.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultCourse(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+    );
+  }
+}
+
+class BatchMcqResultExam {
+  final int id;
+  final String name;
+  final String? description;
+  final String examTime;
+  final String marksPerQuestion;
+  final String negativeMarks;
+  final String status;
+
+  BatchMcqResultExam({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.examTime,
+    required this.marksPerQuestion,
+    required this.negativeMarks,
+    required this.status,
+  });
+
+  factory BatchMcqResultExam.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultExam(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'],
+      examTime: json['exam_time'] ?? '',
+      marksPerQuestion: json['marks_per_question'] ?? '0',
+      negativeMarks: json['negative_marks'] ?? '0',
+      status: json['status'] ?? '',
+    );
+  }
+}
+
+class BatchMcqResultSolution {
+  final int id;
+  final int questionId;
+  final String correctAns;
+  final String yourAns;
+  final BatchMcqResultQuestion question;
+
+  BatchMcqResultSolution({
+    required this.id,
+    required this.questionId,
+    required this.correctAns,
+    required this.yourAns,
+    required this.question,
+  });
+
+  factory BatchMcqResultSolution.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultSolution(
+      id: json['id'] ?? 0,
+      questionId: json['question_id'] ?? 0,
+      correctAns: json['correct_ans'] ?? '',
+      yourAns: json['your_ans'] ?? '',
+      question: BatchMcqResultQuestion.fromJson(json['question'] ?? {}),
+    );
+  }
+}
+
+class BatchMcqResultQuestion {
+  final int id;
+  final String question;
+  final String optA;
+  final String optB;
+  final String optC;
+  final String optD;
+
+  BatchMcqResultQuestion({
+    required this.id,
+    required this.question,
+    required this.optA,
+    required this.optB,
+    required this.optC,
+    required this.optD,
+  });
+
+  factory BatchMcqResultQuestion.fromJson(Map<String, dynamic> json) {
+    return BatchMcqResultQuestion(
+      id: json['id'] ?? 0,
+      question: json['question'] ?? '',
+      optA: json['opt_a'] ?? '',
+      optB: json['opt_b'] ?? '',
+      optC: json['opt_c'] ?? '',
+      optD: json['opt_d'] ?? '',
+    );
+  }
 } 

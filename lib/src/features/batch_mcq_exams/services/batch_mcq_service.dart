@@ -48,4 +48,14 @@ class BatchMcqService {
       throw Exception('Failed to reset batch MCQ exam: ${e.toString()}');
     }
   }
+
+  // Fetch batch MCQ exam result
+  static Future<BatchMcqResultResponse> getBatchMcqResult(String resultUrl) async {
+    try {
+      final response = await ApiService.getFromFullUrl(resultUrl);
+      return BatchMcqResultResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch batch MCQ exam result: ${e.toString()}');
+    }
+  }
 } 
