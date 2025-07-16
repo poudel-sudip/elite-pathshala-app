@@ -176,7 +176,7 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
     return AuthGuard(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Solution'),
+          title: Text(_solutionData?.exam.name ?? 'Solution'),
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
@@ -234,8 +234,6 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildExamInfo(),
-            const SizedBox(height: 24),
             _buildQuestionInfo(),
             const SizedBox(height: 24),
             _buildSolutionImages(),
@@ -245,56 +243,7 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
     );
   }
 
-  Widget _buildExamInfo() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _solutionData!.exam.name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _solutionData!.batch.name,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Chip(
-                  label: Text(
-                    _solutionData!.exam.status,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  backgroundColor: _getExamStatusColor(_solutionData!.exam.status),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Started: ${_solutionData!.exam.startAt}',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildQuestionInfo() {
     return Card(
@@ -323,17 +272,7 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
                 ),
               ],
             ),
-            if (_solutionData!.question.group.description != null && 
-                _solutionData!.question.group.description!.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                _solutionData!.question.group.description!,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
+
             const SizedBox(height: 16),
             const Text(
               'Question:',

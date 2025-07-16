@@ -274,14 +274,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _attemptData!.batch.name,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Row(
@@ -336,8 +329,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
                 Text(
                   group.name,
@@ -346,13 +338,16 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
+                  textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 4),
                 Text(
                   '(${group.marks} Marks)',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -364,6 +359,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
                   fontSize: 14,
                   color: Colors.grey,
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
             const SizedBox(height: 16),
