@@ -56,7 +56,7 @@ class BatchWrittenExamService {
       final response = await ApiService.postMultipartToFullUrl(
         addImageUrl,
         {},
-        files: {'answer_image': images},
+        files: {'answer_image[]': images},
       );
       return BatchWrittenExamAddImageResponse.fromJson(response);
     } catch (e) {

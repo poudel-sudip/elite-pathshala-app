@@ -266,7 +266,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               _attemptData!.exam.name,
@@ -327,7 +327,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
               children: [
@@ -426,17 +426,21 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
                               ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => BatchWrittenExamSolutionPage(
                           solutionUrl: question.solutionDetail,
                           question: question,
-                          onSolutionUpdated: _loadExamAttempt,
+                          onSolutionUpdated: () {
+                            _loadExamAttempt();
+                          },
                         ),
                       ),
                     );
+                    // Refresh the exam data when returning from solution page
+                    _loadExamAttempt();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: question.solved ? Colors.yellow.shade600 : Colors.green,
