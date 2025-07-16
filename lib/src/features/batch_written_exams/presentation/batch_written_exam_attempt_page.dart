@@ -173,7 +173,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(true); // Return true to indicate successful submission
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

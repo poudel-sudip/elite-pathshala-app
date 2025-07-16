@@ -361,8 +361,8 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BatchWrittenExamAttemptPage(
@@ -371,6 +371,11 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
                   ),
                 ),
               );
+              
+              // Refresh the exams list if submission was successful
+              if (result == true) {
+                _loadBatchWrittenExams();
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
