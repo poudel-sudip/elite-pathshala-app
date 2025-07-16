@@ -156,18 +156,143 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _examListData!.examLists.length,
-                itemBuilder: (context, index) {
-                  final exam = _examListData!.examLists[index];
-                  return _buildExamButtons(exam);
-                },
-              ),
+              _buildBatchInfo(),
+              const SizedBox(height: 24),
+              _buildExamsList(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBatchInfo() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _examListData!.name,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Course: ${_examListData!.course.name}',
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Chip(
+                  label: Text(
+                    _examListData!.status,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  backgroundColor: _examListData!.status == 'Running'
+                      ? Colors.green
+                      : Colors.orange,
+                ),
+                Text(
+                  '${_examListData!.examCount} Exam${_examListData!.examCount == 1 ? '' : 's'}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExamsList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Available Exams',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _examListData!.examLists.length,
+          itemBuilder: (context, index) {
+            final exam = _examListData!.examLists[index];
+            return _buildExamCard(exam);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExamCard(BatchWrittenExamItem exam) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              exam.name,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(
+                  Icons.access_time,
+                  size: 16,
+                  color: Colors.grey[600],
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  'Time: ${exam.examTime}',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Chip(
+                  label: Text(
+                    exam.status,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  backgroundColor: _getStatusColor(exam.status),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _buildExamButtons(exam),
+          ],
         ),
       ),
     );
@@ -283,16 +408,28 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        children: buttons
-            .map((button) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: button,
-                ))
-            .toList(),
-      ),
+    return Column(
+      children: buttons
+          .map((button) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: button,
+              ))
+          .toList(),
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'unsolved':
+        return Colors.orange.shade100;
+      case 'pending':
+        return Colors.blue.shade100;
+      case 'under evaluation':
+        return Colors.purple.shade100;
+      case 'published':
+        return Colors.green.shade100;
+      default:
+        return Colors.grey.shade100;
+    }
   }
 } 
