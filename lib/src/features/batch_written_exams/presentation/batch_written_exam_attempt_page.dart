@@ -90,10 +90,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
             }
           } else {
             timer.cancel();
-            // Show time expired message instead of auto-submit
-            if (mounted) {
-              _showTimeExpiredDialog();
-            }
+            // Timer expired - no actions or effects
           }
         });
       }
@@ -102,35 +99,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
     }
   }
 
-  void _showTimeExpiredDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Row(
-            children: [
-              Icon(Icons.access_time_filled, color: Colors.red),
-              SizedBox(width: 8),
-              Text('Time Expired'),
-            ],
-          ),
-          content: const Text(
-            'The exam time has expired. Please submit your answers for evaluation.',
-            style: TextStyle(fontSize: 16),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   Future<void> _submitExam() async {
     if (_attemptData == null || _isSubmitting) return;
