@@ -324,13 +324,18 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
   }
 
   Widget _buildQuestionGroups() {
+    int globalQuestionNumber = 1;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _attemptData!.exam.questionGroups.map((group) => _buildQuestionGroup(group)).toList(),
+      children: _attemptData!.exam.questionGroups.map((group) {
+        final groupWidget = _buildQuestionGroup(group, globalQuestionNumber);
+        globalQuestionNumber += group.questionList.length;
+        return groupWidget;
+      }).toList(),
     );
   }
 
-  Widget _buildQuestionGroup(BatchWrittenQuestionGroup group) {
+  Widget _buildQuestionGroup(BatchWrittenQuestionGroup group, int startingQuestionNumber) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Padding(
@@ -375,7 +380,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
             ...group.questionList.asMap().entries.map((entry) {
               final index = entry.key;
               final question = entry.value;
-              return _buildQuestionItem(question, index + 1);
+              return _buildQuestionItem(question, startingQuestionNumber + index);
             }).toList(),
           ],
         ),
