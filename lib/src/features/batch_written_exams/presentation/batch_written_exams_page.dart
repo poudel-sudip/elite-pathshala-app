@@ -4,6 +4,7 @@ import '../../../core/models/course_classroom.dart';
 import '../../../shared/widgets/auth_guard.dart';
 import '../services/batch_written_exam_service.dart';
 import 'batch_written_exam_attempt_page.dart';
+import 'batch_written_exam_questions_page.dart';
 
 class BatchWrittenExamsPage extends StatefulWidget {
   final ClassroomClass classroomClass;
@@ -296,7 +297,15 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
                 if (exam.questionShowLink != null)
                   TextButton(
                     onPressed: () {
-                      // TODO: Navigate to view questions page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BatchWrittenExamQuestionsPage(
+                            questionsUrl: exam.questionShowLink!,
+                            examName: exam.name,
+                          ),
+                        ),
+                      );
                     },
                     child: const Text('View Questions'),
                   ),

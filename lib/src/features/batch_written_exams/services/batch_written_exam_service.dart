@@ -73,4 +73,14 @@ class BatchWrittenExamService {
       throw Exception('Failed to delete image from solution: ${e.toString()}');
     }
   }
+
+  // Fetch batch written exam questions
+  static Future<BatchWrittenExamQuestionsResponse> getBatchWrittenExamQuestions(String questionsUrl) async {
+    try {
+      final response = await ApiService.getFromFullUrl(questionsUrl);
+      return BatchWrittenExamQuestionsResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch batch written exam questions: ${e.toString()}');
+    }
+  }
 } 

@@ -540,3 +540,167 @@ class BatchWrittenExamDeleteImageResponse {
     );
   }
 } 
+
+// Batch Written Exam Questions Response Models
+class BatchWrittenExamQuestionsResponse {
+  final bool success;
+  final String message;
+  final BatchWrittenExamQuestionsData data;
+
+  BatchWrittenExamQuestionsResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory BatchWrittenExamQuestionsResponse.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamQuestionsResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? 'Unknown error',
+      data: BatchWrittenExamQuestionsData.fromJson(json['data'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenExamQuestionsData {
+  final int id;
+  final int batchId;
+  final int examId;
+  final BatchWrittenQuestionsExamBatch batch;
+  final BatchWrittenQuestionsExam exam;
+
+  BatchWrittenExamQuestionsData({
+    required this.id,
+    required this.batchId,
+    required this.examId,
+    required this.batch,
+    required this.exam,
+  });
+
+  factory BatchWrittenExamQuestionsData.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamQuestionsData(
+      id: json['id'] ?? 0,
+      batchId: json['batch_id'] ?? 0,
+      examId: json['exam_id'] ?? 0,
+      batch: BatchWrittenQuestionsExamBatch.fromJson(json['batch'] ?? {}),
+      exam: BatchWrittenQuestionsExam.fromJson(json['exam'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenQuestionsExamBatch {
+  final int id;
+  final int courseId;
+  final String name;
+  final String image;
+  final String status;
+  final BatchWrittenCourse course;
+
+  BatchWrittenQuestionsExamBatch({
+    required this.id,
+    required this.courseId,
+    required this.name,
+    required this.image,
+    required this.status,
+    required this.course,
+  });
+
+  factory BatchWrittenQuestionsExamBatch.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenQuestionsExamBatch(
+      id: json['id'] ?? 0,
+      courseId: json['course_id'] ?? 0,
+      name: json['name'] ?? '',
+      image: json['image'] ?? '',
+      status: json['status'] ?? '',
+      course: BatchWrittenCourse.fromJson(json['course'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenQuestionsExam {
+  final int id;
+  final String name;
+  final String? description;
+  final String examTime;
+  final String status;
+  final String fullMarks;
+  final String passMarks;
+  final List<BatchWrittenQuestionsGroup> questionGroups;
+
+  BatchWrittenQuestionsExam({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.examTime,
+    required this.status,
+    required this.fullMarks,
+    required this.passMarks,
+    required this.questionGroups,
+  });
+
+  factory BatchWrittenQuestionsExam.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenQuestionsExam(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'],
+      examTime: json['exam_time'] ?? '',
+      status: json['status'] ?? '',
+      fullMarks: json['full_marks'] ?? '',
+      passMarks: json['pass_marks'] ?? '',
+      questionGroups: (json['question_groups'] as List? ?? [])
+          .map((e) => BatchWrittenQuestionsGroup.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class BatchWrittenQuestionsGroup {
+  final int id;
+  final String name;
+  final String? description;
+  final String marks;
+  final List<BatchWrittenQuestionItem> questionList;
+  final int questionCount;
+
+  BatchWrittenQuestionsGroup({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.marks,
+    required this.questionList,
+    required this.questionCount,
+  });
+
+  factory BatchWrittenQuestionsGroup.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenQuestionsGroup(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'],
+      marks: json['marks'] ?? '',
+      questionList: (json['question_list'] as List? ?? [])
+          .map((e) => BatchWrittenQuestionItem.fromJson(e))
+          .toList(),
+      questionCount: json['question_count'] ?? 0,
+    );
+  }
+}
+
+class BatchWrittenQuestionItem {
+  final int id;
+  final String question;
+  final String marks;
+
+  BatchWrittenQuestionItem({
+    required this.id,
+    required this.question,
+    required this.marks,
+  });
+
+  factory BatchWrittenQuestionItem.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenQuestionItem(
+      id: json['id'] ?? 0,
+      question: json['question'] ?? '',
+      marks: json['marks'] ?? '',
+    );
+  }
+} 
