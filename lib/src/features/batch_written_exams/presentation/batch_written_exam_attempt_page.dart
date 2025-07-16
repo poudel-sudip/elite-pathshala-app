@@ -429,25 +429,25 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BatchWrittenExamSolutionPage(
-                        solutionUrl: question.solutionDetail,
-                        question: question,
-                        onSolutionUpdated: _loadExamAttempt,
+                              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BatchWrittenExamSolutionPage(
+                          solutionUrl: question.solutionDetail,
+                          question: question,
+                          onSolutionUpdated: _loadExamAttempt,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: question.solved ? Colors.orange : Colors.green,
-                  foregroundColor: Colors.white,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: question.solved ? Colors.yellow.shade600 : Colors.green,
+                    foregroundColor: question.solved ? Colors.black : Colors.white,
+                  ),
+                  child: Text(question.solved ? 'Edit Answer' : 'Upload Answer'),
                 ),
-                child: Text(question.solved ? 'Edit Answer' : 'Upload Answer'),
-              ),
             ],
           ),
         ],
