@@ -67,12 +67,11 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
   void _parseAndStartTimer(String remainingTime) {
     try {
       final parts = remainingTime.split(':');
-      if (parts.length == 3) {
+      if (parts.length == 2) {
         final hours = int.parse(parts[0]);
         final minutes = int.parse(parts[1]);
-        final seconds = int.parse(parts[2]);
         
-        _remainingTime = Duration(hours: hours, minutes: minutes, seconds: seconds);
+        _remainingTime = Duration(hours: hours, minutes: minutes);
         
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           if (_remainingTime.inSeconds > 0) {
@@ -81,7 +80,8 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
             });
           } else {
             timer.cancel();
-            _autoSubmitExam();
+            // Show time expired message instead of auto-submit
+            _showTimeExpiredDialog();
           }
         });
       }
@@ -90,10 +90,34 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
     }
   }
 
-  Future<void> _autoSubmitExam() async {
-    if (_attemptData != null && !_isSubmitting) {
-      await _submitExam();
-    }
+  void _showTimeExpiredDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.access_time_filled, color: Colors.red),
+              SizedBox(width: 8),
+              Text('Time Expired'),
+            ],
+          ),
+          content: const Text(
+            'The exam time has expired. Please submit your answers for evaluation.',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _submitExam() async {
