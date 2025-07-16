@@ -8,6 +8,7 @@ import '../../chat/presentation/chat_page.dart';
 import '../../videos/presentation/video_units_page.dart';
 import '../../files/presentation/file_units_page.dart';
 import '../../batch_mcq_exams/presentation/batch_mcq_exams_page.dart';
+import '../../batch_written_exams/presentation/batch_written_exams_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -129,6 +130,16 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => BatchMcqExamsPage(
+          classroomClass: classroomClass,
+        ),
+      ),
+    );
+  }
+
+  void _openWrittenExams(ClassroomClass classroomClass) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => BatchWrittenExamsPage(
           classroomClass: classroomClass,
         ),
       ),
@@ -371,7 +382,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (links.writtenExams != null && links.writtenExams!.isNotEmpty) {
-      buttons.add(_buildFileButton('Written Exams', Colors.purple, () => _launchUrl(links.writtenExams!)));
+      buttons.add(_buildFileButton('Written Exams', Colors.purple, () => _openWrittenExams(classroomClass)));
     }
 
     return buttons;
