@@ -300,31 +300,47 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
                     },
                     child: const Text('View Questions'),
                   ),
-                if (exam.resultLink != null)
+                if (exam.resultLink != null && exam.status.toLowerCase() == 'published')
                   TextButton(
                     onPressed: () {
                       // TODO: Navigate to result page
                     },
                     child: const Text('Show Result'),
                   ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BatchWrittenExamAttemptPage(
-                          attemptUrl: exam.attemptLink,
-                          examName: exam.name,
+                if (exam.status.toLowerCase() == 'unsolved' || exam.status.toLowerCase() == 'pending')
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BatchWrittenExamAttemptPage(
+                            attemptUrl: exam.attemptLink,
+                            examName: exam.name,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('Attempt Exam'),
                   ),
-                  child: const Text('Attempt Exam'),
-                ),
+                if (exam.status.toLowerCase() == 'under evaluation')
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.purple.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'Under Evaluation',
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ],
@@ -335,12 +351,14 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'solved':
-        return Colors.green.shade100;
       case 'unsolved':
         return Colors.orange.shade100;
       case 'pending':
         return Colors.blue.shade100;
+      case 'under evaluation':
+        return Colors.purple.shade100;
+      case 'published':
+        return Colors.green.shade100;
       default:
         return Colors.grey.shade100;
     }

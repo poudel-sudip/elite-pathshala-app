@@ -278,9 +278,7 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  backgroundColor: _solutionData!.exam.status == 'Pending' 
-                      ? Colors.orange.shade100 
-                      : Colors.green.shade100,
+                  backgroundColor: _getExamStatusColor(_solutionData!.exam.status),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -415,6 +413,9 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
   }
 
   Widget _buildImageCard(BatchWrittenSolutionImage image) {
+    final status = _solutionData!.exam.status.toLowerCase();
+    final canEdit = status == 'pending' || status == 'unsolved';
+
     return Card(
       child: Stack(
         children: [
@@ -442,24 +443,25 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
               },
             ),
           ),
-          Positioned(
-            top: 8,
-            right: 8,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                  size: 20,
+          if (canEdit)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
                 ),
-                onPressed: () => _showDeleteConfirmation(image),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  onPressed: () => _showDeleteConfirmation(image),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -467,6 +469,31 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
 
   Widget _buildAddImageButton() {
     if (_solutionData == null) return const SizedBox.shrink();
+
+    final status = _solutionData!.exam.status.toLowerCase();
+    final canEdit = status == 'pending' || status == 'unsolved';
+
+    if (!canEdit) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: _getExamStatusColor(status),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            _getStatusMessage(status),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: _getStatusTextColor(status),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -493,5 +520,42 @@ class _BatchWrittenExamSolutionPageState extends State<BatchWrittenExamSolutionP
         ),
       ),
     );
+  }
+
+  Color _getStatusTextColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'under evaluation':
+        return Colors.purple;
+      case 'published':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _getStatusMessage(String status) {
+    switch (status.toLowerCase()) {
+      case 'under evaluation':
+        return 'Exam is Under Evaluation - Cannot Edit';
+      case 'published':
+        return 'Exam Results Published - Cannot Edit';
+      default:
+        return 'Cannot Edit Answer';
+    }
+  }
+
+  Color _getExamStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'unsolved':
+        return Colors.orange.shade100;
+      case 'pending':
+        return Colors.blue.shade100;
+      case 'under evaluation':
+        return Colors.purple.shade100;
+      case 'published':
+        return Colors.green.shade100;
+      default:
+        return Colors.grey.shade100;
+    }
   }
 } 

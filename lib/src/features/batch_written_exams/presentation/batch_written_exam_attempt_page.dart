@@ -432,6 +432,31 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
   Widget _buildSubmitButton() {
     if (_attemptData == null) return const SizedBox.shrink();
 
+    final status = _attemptData!.status.toLowerCase();
+    final isSubmittable = status == 'pending' || status == 'unsolved';
+
+    if (!isSubmittable) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: _getStatusColor(status),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            _getStatusMessage(status),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: _getStatusTextColor(status),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       child: ElevatedButton(
@@ -449,5 +474,38 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
               ),
       ),
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'under evaluation':
+        return Colors.purple.shade100;
+      case 'published':
+        return Colors.green.shade100;
+      default:
+        return Colors.grey.shade100;
+    }
+  }
+
+  Color _getStatusTextColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'under evaluation':
+        return Colors.purple;
+      case 'published':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _getStatusMessage(String status) {
+    switch (status.toLowerCase()) {
+      case 'under evaluation':
+        return 'Exam is Under Evaluation';
+      case 'published':
+        return 'Exam Results Published';
+      default:
+        return 'Exam Not Available';
+    }
   }
 } 
