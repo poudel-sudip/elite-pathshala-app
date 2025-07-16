@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../config.dart';
@@ -393,6 +394,55 @@ class ApiService {
       }
       // If JSON parsing fails, return the raw response
       throw Exception('Invalid response format: $responseBody');
+    }
+  }
+
+  // Multipart file upload to full URL
+  static Future<Map<String, dynamic>> postMultipartToFullUrl(
+    String fullUrl,
+    Map<String, dynamic> data, {
+    Map<String, List<File>>? files,
+  }) async {
+    try {
+      final url = Uri.parse(fullUrl);
+      final request = http.MultipartRequest('POST', url);
+      
+      // Add headers
+      final authHeader = await TokenStorage.getAuthHeader();
+      if (authHeader != null) {
+        request.headers['Authorization'] = authHeader;
+      }
+      request.headers['Accept'] = 'application/json';
+      
+      // Add fields
+      data.forEach((key, value) {
+        if (value != null) {
+          request.fields[key] = value.toString();
+        }
+      });
+      
+      // Add files if provided
+      if (files != null) {
+        for (final entry in files.entries) {
+          final fieldName = entry.key;
+          final fileList = entry.value;
+          
+          for (final file in fileList) {
+            final multipartFile = await http.MultipartFile.fromPath(
+              fieldName,
+              file.path,
+            );
+            request.files.add(multipartFile);
+          }
+        }
+      }
+      
+      final response = await request.send();
+      final responseBody = await response.stream.bytesToString();
+      
+      return _handleMultipartResponse(response.statusCode, responseBody);
+    } catch (e) {
+      throw Exception('Multipart upload failed: ${e.toString()}');
     }
   }
 
