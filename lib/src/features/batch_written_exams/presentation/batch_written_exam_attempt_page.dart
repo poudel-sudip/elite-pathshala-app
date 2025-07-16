@@ -212,50 +212,72 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
     }
 
     if (_errorMessage != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              _errorMessage!,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+      return RefreshIndicator(
+        onRefresh: _loadExamAttempt,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 200,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _loadExamAttempt,
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadExamAttempt,
-              child: const Text('Retry'),
-            ),
-          ],
+          ),
         ),
       );
     }
 
     if (_attemptData == null) {
-      return const Center(
-        child: Text('No exam data available'),
+      return RefreshIndicator(
+        onRefresh: _loadExamAttempt,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 200,
+            child: const Center(
+              child: Text('No exam data available'),
+            ),
+          ),
+        ),
       );
     }
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildExamInfo(),
-            const SizedBox(height: 24),
-            _buildQuestionGroups(),
-          ],
+    return RefreshIndicator(
+      onRefresh: _loadExamAttempt,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildExamInfo(),
+              const SizedBox(height: 24),
+              _buildQuestionGroups(),
+            ],
+          ),
         ),
       ),
     );
