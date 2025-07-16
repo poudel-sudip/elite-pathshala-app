@@ -156,11 +156,16 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildBatchInfo(),
-              const SizedBox(height: 24),
-              _buildExamsList(),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _examListData!.examLists.length,
+                itemBuilder: (context, index) {
+                  final exam = _examListData!.examLists[index];
+                  return _buildExamButtons(exam);
+                },
+              ),
             ],
           ),
         ),
@@ -168,208 +173,126 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
     );
   }
 
-  Widget _buildBatchInfo() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _examListData!.name,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Course: ${_examListData!.course.name}',
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Chip(
-                  label: Text(
-                    _examListData!.status,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  backgroundColor: _examListData!.status == 'Running'
-                      ? Colors.green
-                      : Colors.orange,
-                ),
-                Text(
-                  '${_examListData!.examCount} Exam${_examListData!.examCount == 1 ? '' : 's'}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget _buildExamButtons(BatchWrittenExamItem exam) {
+    List<Widget> buttons = [];
 
-  Widget _buildExamsList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Available Exams',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+    // View Questions button
+    if (exam.questionShowLink != null) {
+      buttons.add(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BatchWrittenExamQuestionsPage(
+                    questionsUrl: exam.questionShowLink!,
+                    examName: exam.name,
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            child: const Text(
+              'View Questions',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
           ),
         ),
-        const SizedBox(height: 12),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: _examListData!.examLists.length,
-          itemBuilder: (context, index) {
-            final exam = _examListData!.examLists[index];
-            return _buildExamCard(exam);
-          },
-        ),
-      ],
-    );
-  }
+      );
+    }
 
-  Widget _buildExamCard(BatchWrittenExamItem exam) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              exam.name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+    // Show Result button
+    if (exam.resultLink != null && exam.status.toLowerCase() == 'published') {
+      buttons.add(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              // TODO: Navigate to result page
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
             ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  size: 16,
-                  color: Colors.grey[600],
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  'Time: ${exam.examTime}',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Chip(
-                  label: Text(
-                    exam.status,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  backgroundColor: _getStatusColor(exam.status),
-                ),
-              ],
+            child: const Text(
+              'Show Result',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (exam.questionShowLink != null)
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BatchWrittenExamQuestionsPage(
-                            questionsUrl: exam.questionShowLink!,
-                            examName: exam.name,
-                          ),
-                        ),
-                      );
-                    },
-                    child: const Text('View Questions'),
-                  ),
-                if (exam.resultLink != null && exam.status.toLowerCase() == 'published')
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Navigate to result page
-                    },
-                    child: const Text('Show Result'),
-                  ),
-                if (exam.status.toLowerCase() == 'unsolved' || exam.status.toLowerCase() == 'pending')
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BatchWrittenExamAttemptPage(
-                            attemptUrl: exam.attemptLink,
-                            examName: exam.name,
-                          ),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Attempt Exam'),
-                  ),
-                if (exam.status.toLowerCase() == 'under evaluation')
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.purple.shade100,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      'Under Evaluation',
-                      style: TextStyle(
-                        color: Colors.purple,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ],
+          ),
         ),
+      );
+    }
+
+    // Attempt Exam button
+    if (exam.status.toLowerCase() == 'unsolved' || exam.status.toLowerCase() == 'pending') {
+      buttons.add(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BatchWrittenExamAttemptPage(
+                    attemptUrl: exam.attemptLink,
+                    examName: exam.name,
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            child: const Text(
+              'Attempt Exam',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Under Evaluation button
+    if (exam.status.toLowerCase() == 'under evaluation') {
+      buttons.add(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.purple,
+              disabledBackgroundColor: Colors.purple.shade300,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            child: const Text(
+              'Under Evaluation',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        children: buttons
+            .map((button) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: button,
+                ))
+            .toList(),
       ),
     );
-  }
-
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'unsolved':
-        return Colors.orange.shade100;
-      case 'pending':
-        return Colors.blue.shade100;
-      case 'under evaluation':
-        return Colors.purple.shade100;
-      case 'published':
-        return Colors.green.shade100;
-      default:
-        return Colors.grey.shade100;
-    }
   }
 } 
