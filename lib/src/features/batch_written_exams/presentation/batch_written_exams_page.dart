@@ -386,28 +386,6 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
       );
     }
 
-    // Under Evaluation button
-    if (exam.status.toLowerCase() == 'under evaluation') {
-      buttons.add(
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.purple,
-              disabledBackgroundColor: Colors.purple.shade300,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-            child: const Text(
-              'Under Evaluation',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-      );
-    }
-
     return Column(
       children: buttons
           .map((button) => Padding(
