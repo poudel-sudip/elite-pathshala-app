@@ -95,7 +95,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
         });
       }
     } catch (e) {
-      print('Error parsing remaining time: $e');
+      // Error parsing remaining time
     }
   }
 
