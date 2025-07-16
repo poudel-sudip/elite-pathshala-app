@@ -704,3 +704,214 @@ class BatchWrittenQuestionItem {
     );
   }
 } 
+
+// Batch Written Exam Result Response Models
+class BatchWrittenExamResultResponse {
+  final bool success;
+  final String message;
+  final BatchWrittenExamResultData data;
+
+  BatchWrittenExamResultResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory BatchWrittenExamResultResponse.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamResultResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? 'Unknown error',
+      data: BatchWrittenExamResultData.fromJson(json['data'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenExamResultData {
+  final int id;
+  final int batchId;
+  final int examId;
+  final String attemptDate;
+  final String status;
+  final BatchWrittenCourse batch;
+  final BatchWrittenExamResult result;
+  final List<BatchWrittenExamResultSolution> solutions;
+  final BatchWrittenExam exam;
+
+  BatchWrittenExamResultData({
+    required this.id,
+    required this.batchId,
+    required this.examId,
+    required this.attemptDate,
+    required this.status,
+    required this.batch,
+    required this.result,
+    required this.solutions,
+    required this.exam,
+  });
+
+  factory BatchWrittenExamResultData.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamResultData(
+      id: json['id'] ?? 0,
+      batchId: json['batch_id'] ?? 0,
+      examId: json['exam_id'] ?? 0,
+      attemptDate: json['attempt_date'] ?? '',
+      status: json['status'] ?? '',
+      batch: BatchWrittenCourse.fromJson(json['batch'] ?? {}),
+      result: BatchWrittenExamResult.fromJson(json['result'] ?? {}),
+      solutions: (json['solutions'] as List? ?? [])
+          .map((solution) => BatchWrittenExamResultSolution.fromJson(solution))
+          .toList(),
+      exam: BatchWrittenExam.fromJson(json['exam'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenExamResult {
+  final int id;
+  final String obtainedMarks;
+  final String remarks;
+  final String verifiedBy;
+
+  BatchWrittenExamResult({
+    required this.id,
+    required this.obtainedMarks,
+    required this.remarks,
+    required this.verifiedBy,
+  });
+
+  factory BatchWrittenExamResult.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamResult(
+      id: json['id'] ?? 0,
+      obtainedMarks: json['obtained_marks'] ?? '',
+      remarks: json['remarks'] ?? '',
+      verifiedBy: json['verified_by'] ?? '',
+    );
+  }
+}
+
+class BatchWrittenExamResultSolution {
+  final int id;
+  final String group;
+  final String question;
+  final String marks;
+  final String solutionDetail;
+
+  BatchWrittenExamResultSolution({
+    required this.id,
+    required this.group,
+    required this.question,
+    required this.marks,
+    required this.solutionDetail,
+  });
+
+  factory BatchWrittenExamResultSolution.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamResultSolution(
+      id: json['id'] ?? 0,
+      group: json['group'] ?? '',
+      question: json['question'] ?? '',
+      marks: json['marks'] ?? '',
+      solutionDetail: json['solution_detail'] ?? '',
+    );
+  }
+}
+
+// Batch Written Exam Solution Detail Response Models
+class BatchWrittenExamSolutionDetailResponse {
+  final bool success;
+  final String message;
+  final BatchWrittenExamSolutionDetailData data;
+
+  BatchWrittenExamSolutionDetailResponse({
+    required this.success,
+    required this.message,
+    required this.data,
+  });
+
+  factory BatchWrittenExamSolutionDetailResponse.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamSolutionDetailResponse(
+      success: json['success'] ?? false,
+      message: json['message'] ?? 'Unknown error',
+      data: BatchWrittenExamSolutionDetailData.fromJson(json['data'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenExamSolutionDetailData {
+  final int id;
+  final String evaluation;
+  final String marks;
+  final String verifiedBy;
+  final BatchWrittenCourse batch;
+  final BatchWrittenExam exam;
+  final List<BatchWrittenExamSolutionImage> solutionImages;
+  final BatchWrittenExamResultQuestion question;
+
+  BatchWrittenExamSolutionDetailData({
+    required this.id,
+    required this.evaluation,
+    required this.marks,
+    required this.verifiedBy,
+    required this.batch,
+    required this.exam,
+    required this.solutionImages,
+    required this.question,
+  });
+
+  factory BatchWrittenExamSolutionDetailData.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamSolutionDetailData(
+      id: json['id'] ?? 0,
+      evaluation: json['evaluation'] ?? '',
+      marks: json['marks'] ?? '',
+      verifiedBy: json['verified_by'] ?? '',
+      batch: BatchWrittenCourse.fromJson(json['batch'] ?? {}),
+      exam: BatchWrittenExam.fromJson(json['exam'] ?? {}),
+      solutionImages: (json['solution_images'] as List? ?? [])
+          .map((image) => BatchWrittenExamSolutionImage.fromJson(image))
+          .toList(),
+      question: BatchWrittenExamResultQuestion.fromJson(json['question'] ?? {}),
+    );
+  }
+}
+
+class BatchWrittenExamSolutionImage {
+  final int id;
+  final int solutionId;
+  final String imgUrl;
+
+  BatchWrittenExamSolutionImage({
+    required this.id,
+    required this.solutionId,
+    required this.imgUrl,
+  });
+
+  factory BatchWrittenExamSolutionImage.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamSolutionImage(
+      id: json['id'] ?? 0,
+      solutionId: json['solution_id'] ?? 0,
+      imgUrl: json['img_url'] ?? '',
+    );
+  }
+}
+
+class BatchWrittenExamResultQuestion {
+  final int id;
+  final String question;
+  final String marks;
+  final String groupName;
+
+  BatchWrittenExamResultQuestion({
+    required this.id,
+    required this.question,
+    required this.marks,
+    required this.groupName,
+  });
+
+  factory BatchWrittenExamResultQuestion.fromJson(Map<String, dynamic> json) {
+    return BatchWrittenExamResultQuestion(
+      id: json['id'] ?? 0,
+      question: json['question'] ?? '',
+      marks: json['marks'] ?? '',
+      groupName: json['group_name'] ?? '',
+    );
+  }
+} 

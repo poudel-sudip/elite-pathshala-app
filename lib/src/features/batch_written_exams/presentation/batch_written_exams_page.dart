@@ -5,6 +5,7 @@ import '../../../shared/widgets/auth_guard.dart';
 import '../services/batch_written_exam_service.dart';
 import 'batch_written_exam_attempt_page.dart';
 import 'batch_written_exam_questions_page.dart';
+import 'batch_written_exam_result_page.dart';
 
 class BatchWrittenExamsPage extends StatefulWidget {
   final ClassroomClass classroomClass;
@@ -339,7 +340,15 @@ class _BatchWrittenExamsPageState extends State<BatchWrittenExamsPage> {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              // TODO: Navigate to result page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BatchWrittenExamResultPage(
+                    resultUrl: exam.resultLink!,
+                    examName: exam.name,
+                  ),
+                ),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,

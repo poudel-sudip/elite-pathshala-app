@@ -83,4 +83,24 @@ class BatchWrittenExamService {
       throw Exception('Failed to fetch batch written exam questions: ${e.toString()}');
     }
   }
+
+  // Fetch batch written exam result
+  static Future<BatchWrittenExamResultResponse> getBatchWrittenExamResult(String resultUrl) async {
+    try {
+      final response = await ApiService.getFromFullUrl(resultUrl);
+      return BatchWrittenExamResultResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch batch written exam result: ${e.toString()}');
+    }
+  }
+
+  // Fetch batch written exam solution detail
+  static Future<BatchWrittenExamSolutionDetailResponse> getBatchWrittenExamSolutionDetail(String solutionDetailUrl) async {
+    try {
+      final response = await ApiService.getFromFullUrl(solutionDetailUrl);
+      return BatchWrittenExamSolutionDetailResponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to fetch batch written exam solution detail: ${e.toString()}');
+    }
+  }
 } 
