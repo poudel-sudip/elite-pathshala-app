@@ -104,6 +104,55 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
   Future<void> _submitExam() async {
     if (_attemptData == null || _isSubmitting) return;
 
+    // Show confirmation dialog
+    final confirmed = await _showSubmitConfirmationDialog();
+    if (!confirmed) return;
+
+    // Proceed with submission
+    await _performSubmission();
+  }
+
+  Future<bool> _showSubmitConfirmationDialog() async {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: Colors.orange),
+              SizedBox(width: 8),
+              Text('Confirm Submission'),
+            ],
+          ),
+          content: const Text(
+            'Are you sure you want to submit your answers for evaluation? Once submitted, you cannot make any changes.',
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    ) ?? false;
+  }
+
+  Future<void> _performSubmission() async {
     try {
       if (mounted) {
         setState(() {
