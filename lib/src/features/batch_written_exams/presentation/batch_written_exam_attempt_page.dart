@@ -41,26 +41,32 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
 
   Future<void> _loadExamAttempt() async {
     try {
-      setState(() {
-        _isLoading = true;
-        _errorMessage = null;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+          _errorMessage = null;
+        });
+      }
 
       final response = await BatchWrittenExamService.getBatchWrittenExamAttempt(widget.attemptUrl);
-      setState(() {
-        _attemptData = response.data;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _attemptData = response.data;
+          _isLoading = false;
+        });
+      }
 
       // Start timer if exam is active
       if (_attemptData != null) {
         _parseAndStartTimer(_attemptData!.remainingTime);
       }
     } catch (e) {
-      setState(() {
-        _errorMessage = e.toString().replaceAll('Exception: ', '');
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.toString().replaceAll('Exception: ', '');
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -77,13 +83,17 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
         
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           if (_remainingTime.inSeconds > 0) {
-            setState(() {
-              _remainingTime = _remainingTime - const Duration(seconds: 1);
-            });
+            if (mounted) {
+              setState(() {
+                _remainingTime = _remainingTime - const Duration(seconds: 1);
+              });
+            }
           } else {
             timer.cancel();
             // Show time expired message instead of auto-submit
-            _showTimeExpiredDialog();
+            if (mounted) {
+              _showTimeExpiredDialog();
+            }
           }
         });
       }
@@ -126,42 +136,50 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
     if (_attemptData == null || _isSubmitting) return;
 
     try {
-      setState(() {
-        _isSubmitting = true;
-      });
+      if (mounted) {
+        setState(() {
+          _isSubmitting = true;
+        });
+      }
 
       final response = await BatchWrittenExamService.submitBatchWrittenExam(
         _attemptData!.attemptSubmitLink,
       );
 
-      if (response.success) {
-        _timer?.cancel();
+      if (mounted) {
+        if (response.success) {
+          _timer?.cancel();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.message),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.of(context).pop();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(response.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(response.message),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.of(context).pop();
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response.message),
+            content: Text(e.toString().replaceAll('Exception: ', '')),
             backgroundColor: Colors.red,
           ),
         );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString().replaceAll('Exception: ', '')),
-          backgroundColor: Colors.red,
-        ),
-      );
     } finally {
-      setState(() {
-        _isSubmitting = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isSubmitting = false;
+        });
+      }
     }
   }
 
