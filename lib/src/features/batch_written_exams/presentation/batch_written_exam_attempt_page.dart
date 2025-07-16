@@ -66,12 +66,14 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
 
   void _parseAndStartTimer(String remainingTime) {
     try {
+      // remainingTime is in H:i:s format (hours:minutes:seconds)
       final parts = remainingTime.split(':');
-      if (parts.length == 2) {
+      if (parts.length == 3) {
         final hours = int.parse(parts[0]);
         final minutes = int.parse(parts[1]);
+        final seconds = int.parse(parts[2]);
         
-        _remainingTime = Duration(hours: hours, minutes: minutes);
+        _remainingTime = Duration(hours: hours, minutes: minutes, seconds: seconds);
         
         _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
           if (_remainingTime.inSeconds > 0) {
@@ -293,7 +295,7 @@ class _BatchWrittenExamAttemptPageState extends State<BatchWrittenExamAttemptPag
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     Text(
-                      'Time: ${_attemptData!.exam.examTime}',
+                      'Time: ${_attemptData!.exam.examTime}', // examTime is in HH:MM format
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
