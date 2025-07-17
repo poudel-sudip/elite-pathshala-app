@@ -29,7 +29,7 @@ class BookingItem {
   final String? suspendText;
   final String? createdAt;
   final String? detailLink;
-  final String? salesTeam;
+  final BookingSalesTeam? salesTeam;
   final BookingBatch batch;
 
   BookingItem({
@@ -53,7 +53,7 @@ class BookingItem {
       suspendText: json['suspend_text'],
       createdAt: json['created_at'],
       detailLink: json['detail_link'],
-      salesTeam: json['sales_team'],
+      salesTeam: BookingSalesTeam.fromJson(json['sales_team'] ?? {}),
       batch: BookingBatch.fromJson(json['batch'] ?? {}),
     );
   }
@@ -110,3 +110,20 @@ class BookingCourse {
     );
   }
 } 
+
+class BookingSalesTeam {
+  final int id;
+  final String name;
+
+  BookingSalesTeam({
+    required this.id,
+    required this.name,
+  });
+
+  factory BookingSalesTeam.fromJson(Map<String, dynamic> json) {
+    return BookingSalesTeam(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}

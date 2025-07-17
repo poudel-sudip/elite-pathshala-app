@@ -52,7 +52,7 @@ class ClassroomClass {
   final int trialMode;
   final int dueDays;
   final ClassroomLinks links;
-  final String? salesTeam;
+  final SalesTeam? salesTeam;
   final Batch batch;
 
   ClassroomClass({
@@ -86,7 +86,7 @@ class ClassroomClass {
       trialMode: json['trial_mode'],
       dueDays: json['due_days'],
       links: ClassroomLinks.fromJson(json['links']),
-      salesTeam: json['sales_team'],
+      salesTeam: SalesTeam.fromJson(json['sales_team']),
       batch: Batch.fromJson(json['batch']),
     );
   }
@@ -158,6 +158,23 @@ class Course {
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+}
+
+class SalesTeam {
+  final int id;
+  final String name;
+
+  SalesTeam({
+    required this.id,
+    required this.name,
+  });
+
+  factory SalesTeam.fromJson(Map<String, dynamic> json) {
+    return SalesTeam(
       id: json['id'],
       name: json['name'],
     );
