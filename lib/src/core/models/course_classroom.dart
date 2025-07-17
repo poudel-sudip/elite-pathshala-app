@@ -165,12 +165,12 @@ class Course {
 }
 
 class SalesTeam {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
   SalesTeam({
-    required this.id,
-    required this.name,
+    this.id,
+    this.name,
   });
 
   factory SalesTeam.fromJson(Map<String, dynamic> json) {

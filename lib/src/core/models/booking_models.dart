@@ -112,12 +112,12 @@ class BookingCourse {
 } 
 
 class BookingSalesTeam {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
   BookingSalesTeam({
-    required this.id,
-    required this.name,
+    this.id,
+    this.name,
   });
 
   factory BookingSalesTeam.fromJson(Map<String, dynamic> json) {
